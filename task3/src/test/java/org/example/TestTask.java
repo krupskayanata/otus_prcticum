@@ -8,10 +8,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -26,15 +23,6 @@ public class TestTask {
     @BeforeAll
     public static void setup(){
         WebDriverManager.chromedriver().setup();
-    }
-
-    @BeforeEach
-    public void start() {
-
-    }
-
-    @AfterEach
-    public void shutdown() {
     }
 
     @Test
@@ -68,11 +56,11 @@ public class TestTask {
 
         // проверка открытия картинки в модальном окне
         driver.get("https://demo.w3layouts.com/demos_new/template_demo/03-10-2020/photoflash-liberty-demo_Free/685659620/web/index.html?_ga=2.181802926.889871791.1632394818-2083132868.1632394818");
-        WebElement webElement = driver.findElement(By.xpath("/html/body/section[2]/div/ul[2]/li[2]/span/a/div[1]"));
+        WebElement webElement = driver.findElement(By.xpath("//a[contains(@href,'assets/images/p2.jpg')]"));
         webElement.click();
         Exception error = null;
         try {
-            WebElement modalWindow = webElement.findElement(By.xpath("/html/body/div[7]/div[3]"));
+            WebElement modalWindow = driver.findElement(By.xpath("//div[contains(@class,'pp_pic_holder light_rounded')]"));
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             error = ex;
         }
