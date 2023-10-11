@@ -17,7 +17,7 @@ import java.util.Set;
 
 
 public class TestTask {
-    Logger log = LogManager.getLogger(TestTask.class);
+    private final Logger log = LogManager.getLogger(TestTask.class);
 
 
     @BeforeAll
