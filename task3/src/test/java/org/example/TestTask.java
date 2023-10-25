@@ -60,7 +60,7 @@ public class TestTask {
         webElement.click();
         Exception error = null;
         try {
-            WebElement modalWindow = driver.findElement(By.xpath("//div[contains(@class,'pp_pic_holder light_rounded')]"));
+            WebElement modalWindow = driver.findElement(By.xpath("//div[contains(@class,'pp_hoverContainer')]"));
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             error = ex;
         }
@@ -79,16 +79,16 @@ public class TestTask {
 
         // авторизация на сайте https://otus.ru
         driver.get("https://otus.ru");
-        WebElement webElement = driver.findElement(By.xpath("//*[@id=\"__next\"]/div[1]/div[1]/div/section/div[1]/button"));
+        WebElement webElement = driver.findElement(By.xpath("//button[text()='Войти']"));
         webElement.click();
         String actual = driver.getPageSource();
         String expected = "Войдите в свой аккаунт";
         Assertions.assertTrue(actual.contains(expected));
         WebElement inputLogin = driver.findElement(By.name("email"));
         inputLogin.sendKeys("semabutus@mail.ru");
-        WebElement inputPassword = driver.findElement(By.xpath("//*[@id=\"__PORTAL__\"]/div/div/div[3]/div[2]/div/div[2]/div[1]/div/div[1]/div/div[2]/div/input"));
+        WebElement inputPassword = driver.findElement(By.xpath("//input[contains(@type, 'password')]"));
         inputPassword.sendKeys("Aa1313++");
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"__PORTAL__\"]/div/div/div[3]/div[2]/div/div[2]/div[1]/div/button/div"));
+        WebElement submitButton = driver.findElement(By.xpath("//div[text()='Войти']"));
         submitButton.click();
 
         Set<Cookie> cookies = driver.manage().getCookies();
