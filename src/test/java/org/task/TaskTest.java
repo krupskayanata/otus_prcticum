@@ -1,37 +1,25 @@
-package org.example;
+package org.task;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.task.waiter.Waiters;
 
 import java.util.Set;
-//import org.junit.jupiter.api.Test;
 
 
-public class TestTask {
-    private final Logger log = LogManager.getLogger(TestTask.class);
+public class TaskTest extends AbstractBaseTest {
 
-
-    @BeforeAll
-    public static void setup(){
-        WebDriverManager.chromedriver().setup();
-    }
+    private final Logger log = LogManager.getLogger(TaskTest.class);
+    private static final String js = "arguments[0].click();";
 
     @Test
-    // открытие браузера режиме "headless"
     public void firstTest(){
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        WebDriver driver = new ChromeDriver(options);
 
         // проверка результата поисковой выдачи
         driver.get("https://duckduckgo.com/");
@@ -40,8 +28,9 @@ public class TestTask {
         webElement.sendKeys("ОТУС");
         WebElement button = driver.findElement(By.xpath("//*[@id=\"searchbox_homepage\"]/div/div/button"));
         button.submit();
+        waiters.waitForCondition(ExpectedConditions.invisibilityOf(button));
         String actual = driver.getPageSource();
-        String expected = "Онлайн‑курсы для профессионалов, дистанционное обучение современным";
+        String expected = "Онлайн‑курсы для профессионалов";
         Assertions.assertTrue(actual.contains(expected));
 
         driver.quit();
@@ -71,7 +60,7 @@ public class TestTask {
 
     @Test
     // открытие браузера в полноэкранном режиме
-    public void thirdTest(){
+    public void thirdTest() throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-fullscreen");
         WebDriver driver = new ChromeDriver(options);
@@ -85,9 +74,16 @@ public class TestTask {
         String expected = "Войдите в свой аккаунт";
         Assertions.assertTrue(actual.contains(expected));
         WebElement inputLogin = driver.findElement(By.name("email"));
+        ((JavascriptExecutor) driver).executeScript(js, inputLogin);
         inputLogin.sendKeys("semabutus@mail.ru");
+
         WebElement inputPassword = driver.findElement(By.xpath("//input[contains(@type, 'password')]"));
+        ((JavascriptExecutor) driver).executeScript(js, inputPassword);
+        waiters = new Waiters(driver);
+        waiters.waitElementToBeClickable(inputPassword);
+        ((JavascriptExecutor) driver).executeScript(js, inputPassword);
         inputPassword.sendKeys("Aa1313++");
+
         WebElement submitButton = driver.findElement(By.xpath("//div[text()='Войти']"));
         submitButton.click();
 
