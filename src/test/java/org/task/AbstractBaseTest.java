@@ -1,7 +1,5 @@
 package org.task;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +10,8 @@ import org.task.waiter.Waiters;
 import java.util.concurrent.TimeUnit;
 
 public class AbstractBaseTest {
+
+    private WebDriverFactory webDriverFactory = new WebDriverFactory();
     protected WebDriver driver;
     protected Actions actions;
     protected Waiters waiters;
@@ -19,10 +19,9 @@ public class AbstractBaseTest {
 
     @BeforeEach
     public void start() {
-        this.driver = new WebDriverFactory().createChrome();
+        this.driver = webDriverFactory.createBrowser();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         this.waiters = new Waiters(driver);
-
     }
 
     @AfterEach

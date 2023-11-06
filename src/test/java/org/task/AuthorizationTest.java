@@ -209,7 +209,6 @@ public class AuthorizationTest extends AbstractBaseTest {
         ((JavascriptExecutor) driver).executeScript(js, webElement);
         webElement.clear();
         driver.findElement(by).sendKeys(text);
-
     }
 
 }
