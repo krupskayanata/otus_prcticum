@@ -6,10 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.task.factory.WebDriverFactory;
 import org.task.waiter.Waiters;
@@ -24,6 +21,20 @@ public class AuthorizationTest extends AbstractBaseTest {
     private final String LOGIN = System.getProperty("login") != null ? System.getProperty("login") : "semabutus@mail.ru";
 
     private final Logger log = LogManager.getLogger(AuthorizationTest.class);
+
+    @BeforeEach
+    public void start() {
+        this.driver = webDriverFactory.createBrowser();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.waiters = new Waiters(driver);
+    }
+
+    @AfterEach
+    public void close() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 
     @Test
     public void otusAuthorizationTest() {
@@ -60,7 +71,9 @@ public class AuthorizationTest extends AbstractBaseTest {
         driver.findElement(By.cssSelector(".sc-mrx253-0.enxKCy.sc-945rct-0.iOoJwQ")).click(); //sc-rq8xzv-1 kqcJKZ sc-11ptd2v-1 liHMCp #__PORTAL__ > div > div > div.sc-1alnis6-1.ejcuap > div.sc-1alnis6-4.iVBbVz > div > div.sc-10p60tv-1.eDzhKh > div.sc-10p60tv-2.bQGCmu > div > div.sc-19qj39o-0.iLmCeO > div > div.sc-rq8xzv-1.kqcJKZ.sc-11ptd2v-1.liHMCp > div
         clearAndEnter(By.cssSelector("input[name=\"email\"]"), LOGIN);
         clearAndEnter(By.cssSelector("input[type=\"password\"]"), PASSWORD);
-        driver.findElement(By.xpath("//div[contains(text(),'Войти')]")).click();
+        WebElement buttonIn = driver.findElement(By.xpath("//div[parent::button[contains(@type, 'button')] and contains(text(),'Войти')]"));
+        waiters.waitElementVisible(By.xpath("//div[parent::button[contains(@type, 'button')] and contains(text(),'Войти')]"));
+        clickElement(buttonIn);
         log.info("Authorized successfully");
     }
 
@@ -83,7 +96,7 @@ public class AuthorizationTest extends AbstractBaseTest {
 //        Имя
         clearAndEnter(By.id("id_fname"), "Игнатий");
 //        Выбор страны
-        driver.findElement(By.cssSelector(".select.lk-cv-block__input.lk-cv-block__input_full.js-lk-cv-dependent-master.js-lk-cv-custom-select")).click();
+        driver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'country')]]")).click();
         driver.findElement(By.cssSelector("button[title='Россия']")).click();
 
 //        Имя (в блоге), фамилия + имя, фамилия латиницей
@@ -99,7 +112,7 @@ public class AuthorizationTest extends AbstractBaseTest {
 
 //        Основная информация
 //        Город
-        driver.findElement(By.cssSelector(".select.lk-cv-block__input.lk-cv-block__input_full.js-lk-cv-dependent-slave-city.js-lk-cv-custom-select")).click();
+        driver.findElement(By.xpath("//div[ancestor::label/child::input[contains(@name, 'city')]]")).click();
         driver.findElement(By.xpath("//button[@data-value='136']")).click();
 
 //        Уровень английского языка
@@ -140,18 +153,11 @@ public class AuthorizationTest extends AbstractBaseTest {
 //       Контактная информация
     private void fillContacts() {
 
-        //Вод телефона
-
-//        driver.findElement(By.xpath("//button[contains(text(),'Указать телефон')]")).click();
-//        waiters.waitElementVisible(By.xpath("(@placeholder,'Номер телефона')]"));
-//        clearAndEnter(By.xpath("//input[contains(@placeholder,'Номер телефона')]"), "79208601774");
-//        driver.findElement(By.xpath("//button[contains(text(),'Отправить')]")).click();
-
-        driver.findElement(By.xpath("//div[contains(@class,'input input_full lk-cv-block__input input_straight-bottom-right input_straight-top-right input_no-border-right lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")).click();
+        driver.findElement(By.xpath("//div[ancestor::label/child::input[contains(@value, 'telegram')]]")).click();
         clearAndEnter(By.id("id_contact-0-value"), "https://vk.com/fake");
         driver.findElement(By.xpath("//button[contains(text(),'Добавить')]")).click();
         driver.findElement(By.xpath("//span[@class='placeholder']")).click();
-        driver.findElement(By.cssSelector("div[class='lk-cv-block__select-options lk-cv-block__select-options_left js-custom-select-options-container'] button[title='Тelegram']")).click();
+        driver.findElement(By.xpath("//div[ancestor::label/child::input[contains(@value, 'vk')]]")).click();
         clearAndEnter(By.id("id_contact-1-value"), "@Ignatiy");
 
         log.info("Добавлена контактная информация пользователя");
@@ -209,6 +215,17 @@ public class AuthorizationTest extends AbstractBaseTest {
         ((JavascriptExecutor) driver).executeScript(js, webElement);
         webElement.clear();
         driver.findElement(by).sendKeys(text);
+    }
+
+    private void clickElement(WebElement webElement) {
+        String js = "arguments[0].click();";
+        ((JavascriptExecutor) driver).executeScript(js, webElement);
+        try {
+            driver.findElement(By.xpath("//div[contains(text(),'Неизвестная ошибка')]"));
+        } catch (NoSuchElementException ex) {
+
+        }
+        ((JavascriptExecutor) driver).executeScript(js, webElement);
     }
 
 }

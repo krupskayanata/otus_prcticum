@@ -11,24 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 public class AbstractBaseTest {
 
-    private WebDriverFactory webDriverFactory = new WebDriverFactory();
+    protected WebDriverFactory webDriverFactory = new WebDriverFactory();
     protected WebDriver driver;
     protected Actions actions;
     protected Waiters waiters;
 
 
-    @BeforeEach
-    public void start() {
-        this.driver = webDriverFactory.createBrowser();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        this.waiters = new Waiters(driver);
-    }
 
-    @AfterEach
-    public void close() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 
 }

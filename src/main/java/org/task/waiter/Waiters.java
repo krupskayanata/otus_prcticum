@@ -20,7 +20,7 @@ public class Waiters {
 
     public boolean waitForCondition(ExpectedCondition condition) {
         try {
-            WebDriverWait webDriverWait = new WebDriverWait(this.driver, Duration.ofSeconds(1));
+            WebDriverWait webDriverWait = new WebDriverWait(this.driver, Duration.ofSeconds(2));
             webDriverWait.until(condition);
             return true;
         } catch (TimeoutException ignored) {
@@ -54,5 +54,9 @@ public class Waiters {
 
     public boolean waitForAttribute(By locator, String attributeName, String value) {
         return waitForCondition(ExpectedConditions.attributeContains(locator, attributeName, value));
+    }
+
+    public boolean elementShouldNotBePresent(By by) {
+        return waitForCondition(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
     }
 }
