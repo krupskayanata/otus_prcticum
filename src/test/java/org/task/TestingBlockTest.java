@@ -28,7 +28,7 @@ public class TestingBlockTest {
     @AfterEach
     public void close() {
         if (driver != null) {
-            //driver.quit();
+            driver.quit();
         }
     }
 
