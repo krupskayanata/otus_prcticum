@@ -50,20 +50,9 @@ public class AuthPopup extends AbsPageObject implements IPopup {
         webDriver.findElement(by).sendKeys(text);
     }
 
-    private void clickElement(WebElement webElement) throws InterruptedException {
+    private void clickElement(WebElement webElement) {
         String js = "arguments[0].click();";
         ((JavascriptExecutor) webDriver).executeScript(js, webElement);
-//        boolean noElement = true;
-//        do {
-//            ((JavascriptExecutor) webDriver).executeScript(js, webElement);
-//            Thread.sleep(5L);
-//            try {
-//                webDriver.findElement(By.xpath("//div[contains(text(),'Неизвестная ошибка')]"));
-//            } catch (NoSuchElementException ex) {
-//                noElement = false;
-//            }
-//
-//        } while (noElement);
     }
 
 }
