@@ -7,16 +7,23 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.task.factory.WebDriverFactory;
 import org.task.waiter.Waiters;
 
 import java.util.Set;
 
 
-public class TaskTest extends AbstractBaseTest {
+public class TaskTest {
 
     private final Logger log = LogManager.getLogger(TaskTest.class);
     private static final String js = "arguments[0].click();";
+
+    protected WebDriverFactory webDriverFactory = new WebDriverFactory();
+    protected WebDriver driver;
+    protected Actions actions;
+    protected Waiters waiters;
 
     @Test
     public void firstTest(){

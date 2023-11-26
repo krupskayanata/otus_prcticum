@@ -5,7 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.task.waiter.Waiters;
 
-public abstract class AbsPageObject {
+public abstract class AbsPageObject implements IPageCode {
 
     protected final WebDriver webDriver;
 

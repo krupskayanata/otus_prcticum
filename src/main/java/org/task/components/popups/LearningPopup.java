@@ -20,6 +20,6 @@ public class LearningPopup extends AbsPageObject implements IPopup {
     }
 
     public void clickCalendarOfActions() {
-        webDriver.findElement(By.xpath("//a[contains(@href, 'https://otus.ru/events/near')]")).click();
+        webDriver.findElement(By.xpath("//a[contains(@href, '/events/near')]")).click();
     }
 }

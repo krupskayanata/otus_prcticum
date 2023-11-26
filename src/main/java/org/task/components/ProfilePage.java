@@ -135,12 +135,9 @@ public class ProfilePage extends AbsPageObject {
         Assertions.assertEquals("08.03.1988", webDriver.findElement(By.name("date_of_birth")).getAttribute("value"));
 
 
-        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[contains(text(),'Россия') " +
-                "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
-        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[contains(text(),'Брянск') " +
-                "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
-        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[contains(text(),'Начальный уровень (Beginner)') " +
-                "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
+        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'country')] and contains(text(), 'Россия')]")));
+        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'city')] and contains(text(), 'Брянск')]")));
+        Assertions.assertNotNull( webDriver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'english_level')] and contains(text(), 'Начальный уровень (Beginner)')]")));
 
         log.info("В разделе о себе отображаются указанные ранее данные");
     }

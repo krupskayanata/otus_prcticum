@@ -24,14 +24,14 @@ public class MenuSectionBlock extends AbsPageObject {
     private WebElement menuBlock;
 
 
-    public void checkBlockMenuAvailable() {
-        Assertions.assertThat(waiters.waitElementVisible(menuBlock.findElement(By.xpath(
-                ".//descendant::section/descendant::div[contains(text(), 'Тестирование')]")))).isTrue();
+    public void checkBlockMenuAvailable(String category) {
+        Assertions.assertThat(waiters.waitElementToBeClickable(menuBlock.findElement(By.xpath(
+                String.format(".//descendant::section/descendant::div[contains(text(), '%s')]", category))))).isTrue();
     }
 
-    public void clickTestingMenuToCatalogPage() {
+    public void clickMenuToCatalogPage(String category) {
         WebElement catalogPage = menuBlock.findElement(By.xpath(
-                ".//descendant::section/descendant::div[contains(text(), 'Тестирование')]"));
+                String.format(".//descendant::section/descendant::div[contains(text(), '%s')]", category)));
         catalogPage.click();
     }
 }

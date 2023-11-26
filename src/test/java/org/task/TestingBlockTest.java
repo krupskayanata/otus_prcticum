@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.task.components.MenuSectionBlock;
 import org.task.components.calendar.CalendarOfActionsPage;
-import org.task.components.catalog.CatalogItem;
+import org.task.components.catalog.CatalogItemPage;
 import org.task.components.catalog.CatalogPage;
+import org.task.components.enums.CatalogCategory;
 import org.task.components.popups.LearningPopup;
 import org.task.factory.WebDriverFactory;
 import org.task.pages.MainPage;
@@ -15,6 +16,9 @@ import org.task.pages.MainPage;
 import java.util.concurrent.TimeUnit;
 
 public class TestingBlockTest {
+
+    private final static String WEBINAR_MEETING_TYPE = "Открытый вебинар";
+    private final static String INTENSIVES_MEETING_TYPE = "Интенсивы";
 
     protected WebDriverFactory webDriverFactory = new WebDriverFactory();
     protected WebDriver driver;
@@ -37,18 +41,18 @@ public class TestingBlockTest {
         new MainPage(driver, "/").open();
 
         MenuSectionBlock menuSectionBlock = new MenuSectionBlock(driver);
-        menuSectionBlock.checkBlockMenuAvailable();
-        menuSectionBlock.clickTestingMenuToCatalogPage();
+        menuSectionBlock.checkBlockMenuAvailable(CatalogCategory.TESTING.getTitle());
+        menuSectionBlock.clickMenuToCatalogPage(CatalogCategory.TESTING.getTitle());
 
         CatalogPage catalogPage = new CatalogPage(driver);
-        catalogPage.checkPage();
+        catalogPage.checkPage("?categories=testing");
         catalogPage.checkItemQuantityInCatalogPage(10);
         catalogPage.clickItem();
 
-        CatalogItem catalogItem = new CatalogItem(driver);
-        catalogItem.checkPage();
-        catalogItem.checkDescription();
-        catalogItem.openLearningPopup();
+        CatalogItemPage catalogItemPage = new CatalogItemPage(driver);
+        catalogItemPage.checkPage("/qa-game/");
+        catalogItemPage.checkDescription();
+        catalogItemPage.openLearningPopup();
 
         LearningPopup learningPopup = new LearningPopup(driver);
         learningPopup.popupShouldBeVisible();
@@ -56,10 +60,9 @@ public class TestingBlockTest {
         learningPopup.popupShouldBeNotVisible();
 
         CalendarOfActionsPage calendarOfActionsPage = new CalendarOfActionsPage(driver);
-        calendarOfActionsPage.checkPage();
-        calendarOfActionsPage.clickFilterToWebinarsOnly();
-
-
+        calendarOfActionsPage.checkPage("/near");
+        calendarOfActionsPage.checkMeetingCurrentFilter(INTENSIVES_MEETING_TYPE);
+        calendarOfActionsPage.changeMeetingFilterType(INTENSIVES_MEETING_TYPE, WEBINAR_MEETING_TYPE);
 
     }
 }

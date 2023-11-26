@@ -15,6 +15,8 @@ import java.util.List;
 
 public class CatalogPage extends AbsPageObject implements Checkable {
 
+    private final static String pageCode = "catalog/courses";
+
     private final Waiters waiters = new Waiters(webDriver);
 
     private final Logger log = LogManager.getLogger(CatalogPage.class);
@@ -33,7 +35,7 @@ public class CatalogPage extends AbsPageObject implements Checkable {
     }
 
     @Override
-    public void checkPage() {
+    public void checkPage(String path) {
         Assertions.assertThat(
                 waiters.waitForCondition(
                         ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(),'Каталог')]")))
@@ -41,10 +43,15 @@ public class CatalogPage extends AbsPageObject implements Checkable {
 
         Assertions.assertThat(
                 waiters.waitForCondition(
-                        ExpectedConditions.urlContains("catalog/courses?categories=testing"))
+                        ExpectedConditions.urlContains(this.getPageCode() + path))
         ).isTrue();
 
 
         log.info("Current url {}", webDriver.getCurrentUrl());
+    }
+
+    @Override
+    public String getPageCode() {
+        return pageCode;
     }
 }

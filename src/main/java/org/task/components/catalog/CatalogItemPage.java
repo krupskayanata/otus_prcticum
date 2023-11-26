@@ -10,21 +10,23 @@ import org.task.components.Checkable;
 import org.task.pageobject.AbsPageObject;
 import org.task.waiter.Waiters;
 
-public class CatalogItem extends AbsPageObject implements Checkable {
+public class CatalogItemPage extends AbsPageObject implements Checkable {
+
+    private final static String pageCode = "/lessons";
 
     private final Waiters waiters = new Waiters(webDriver);
 
-    private final Logger log = LogManager.getLogger(CatalogItem.class);
-    public CatalogItem(WebDriver webDriver) {
+    private final Logger log = LogManager.getLogger(CatalogItemPage.class);
+    public CatalogItemPage(WebDriver webDriver) {
         super(webDriver);
     }
 
 
     @Override
-    public void checkPage() {
+    public void checkPage(String path) {
         Assertions.assertThat(
                 waiters.waitForCondition(
-                        ExpectedConditions.urlContains("/lessons/qa-game/"))
+                        ExpectedConditions.urlContains(this.getPageCode() + path))
         ).isTrue();
 
 
@@ -37,5 +39,10 @@ public class CatalogItem extends AbsPageObject implements Checkable {
 
     public void openLearningPopup() {
         webDriver.findElement(By.xpath("//div[parent::div/child::span[contains(text(), 'Обучение')]]")).click();
+    }
+
+    @Override
+    public String getPageCode() {
+        return pageCode;
     }
 }

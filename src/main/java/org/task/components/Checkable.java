@@ -2,5 +2,5 @@ package org.task.components;
 
 public interface Checkable {
 
-    void checkPage();
+    void checkPage(String path);
 }

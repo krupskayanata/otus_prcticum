@@ -16,7 +16,7 @@ public class MenuPopup extends AbsPageObject implements IPopup {
 
     //MenuPopup
 
-    private String menuPopupSelector = "//a[contains(@href, 'https://otus.ru/lk/biography/personal')]";
+    private String menuPopupSelector = "//a[contains(@href, '/lk/biography/personal')]";
 
     @Override
     public void popupShouldBeNotVisible() {

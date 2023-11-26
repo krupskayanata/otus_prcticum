@@ -14,7 +14,12 @@ import org.task.waiter.Waiters;
 import java.util.concurrent.TimeUnit;
 
 
-public class AuthorizationTest extends AbstractBaseTest {
+public class AuthorizationTest {
+
+    protected WebDriverFactory webDriverFactory = new WebDriverFactory();
+    protected WebDriver driver;
+    protected Actions actions;
+    protected Waiters waiters;
 
     private final String BASE_URL = System.getProperty("base.url", "https://otus.ru" );
     private final String PASSWORD = System.getProperty("password") != null ? System.getProperty("password") : "Aa1313++";
@@ -199,12 +204,9 @@ public class AuthorizationTest extends AbstractBaseTest {
         Assertions.assertEquals("08.03.1988", driver.findElement(By.name("date_of_birth")).getAttribute("value"));
 
 
-        Assertions.assertNotNull( driver.findElement(By.xpath("//div[contains(text(),'Россия') " +
-                        "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
-        Assertions.assertNotNull( driver.findElement(By.xpath("//div[contains(text(),'Брянск') " +
-                "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
-        Assertions.assertNotNull( driver.findElement(By.xpath("//div[contains(text(),'Начальный уровень (Beginner)') " +
-                "and contains(@class, 'input input_full lk-cv-block__input lk-cv-block__input_fake lk-cv-block__input_select-fake js-custom-select-presentation')]")));
+        Assertions.assertNotNull( driver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'country')] and contains(text(), 'Россия')]")));
+        Assertions.assertNotNull( driver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'city')] and contains(text(), 'Брянск')]")));
+        Assertions.assertNotNull( driver.findElement(By.xpath("//div[parent::label/child::input[contains(@name, 'english_level')] and contains(text(), 'Начальный уровень (Beginner)')]")));
 
         log.info("В разделе о себе отображаются указанные ранее данные");
     }
@@ -219,12 +221,6 @@ public class AuthorizationTest extends AbstractBaseTest {
 
     private void clickElement(WebElement webElement) {
         String js = "arguments[0].click();";
-        ((JavascriptExecutor) driver).executeScript(js, webElement);
-        try {
-            driver.findElement(By.xpath("//div[contains(text(),'Неизвестная ошибка')]"));
-        } catch (NoSuchElementException ex) {
-
-        }
         ((JavascriptExecutor) driver).executeScript(js, webElement);
     }
 
